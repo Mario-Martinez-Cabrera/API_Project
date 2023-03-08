@@ -105,6 +105,13 @@ class OrderView(generics.ListCreateAPIView):
             result = order_serializer.data.copy()
             result['total'] = total
             return Response(order_serializer.data)
+        
+    def get_total_price(sefl, user):
+        total = 0
+        items = Cart.objects.all().filter(user=user).all()
+        for item in items.values():
+            total += item['price']
+        return total
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
