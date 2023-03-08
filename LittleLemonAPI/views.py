@@ -22,10 +22,10 @@ def menuitems_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def menuitem_detail(request, title):
+def menuitem_detail(request, id):
 
     try:
-        menuitem = MenuItem.objects.get(pk=title)
+        menuitem = MenuItem.objects.get(pk=id)
     except MenuItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
