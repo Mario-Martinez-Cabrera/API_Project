@@ -14,7 +14,7 @@ def menuitems_list(request):
     if request.method == 'GET':
         menuitems = MenuItem.objects.all()
         serializer = MenuItemSerializer(menuitems, many=True)
-        return JsonResponse({'menu items' : serializer.data}, safe=False)
+        return Response(serializer.data)
     if request.method == 'POST':
         serializer = MenuItemSerializer(data=request.data)
         if serializer.is_valid():
