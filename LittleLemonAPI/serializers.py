@@ -1,5 +1,7 @@
 from .models import MenuItem, Cart
 from rest_framework import serializers
+from decimal import Decimal
+from django.contrib.auth.models import User
 
 class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:
