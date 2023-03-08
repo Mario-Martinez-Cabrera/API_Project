@@ -10,9 +10,13 @@ class CategorySerializer (serializers.ModelSerializer):
         fields = ['id', 'title', 'slug']
 
 class MenuItemSerializer(serializers.ModelSerializer):
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all()
+    )
+    # category = CategorySerializer(read_only=True)
     class Meta:
         model = MenuItem
-        fields = ['id', 'title', 'price', 'featured', 'category']
+        fields = ['id', 'title', 'price', 'category', 'featured']
         extra_kwargs = {'price': {'min_value': 2}}
 
 
