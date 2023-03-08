@@ -12,7 +12,7 @@ from rest_framework import generics
 def menuitems_list(request):
     menuitems = MenuItem.objects.all()
     serializer = MenuItemSerializer(menuitems, many=True)
-    return JsonResponse(serializer.data)
+    return JsonResponse(serializer.data, safe=False)
 
 
 #class MenuItemsView(generics.ListCreateAPIView):
