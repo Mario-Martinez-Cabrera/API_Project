@@ -20,6 +20,25 @@ def menuitems_list(request):
         if serializer.is_valid():
             serializer.save
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+def menuitem_detail(request, title):
+
+    try:
+        menuitem = MenuItem.objects.get(pk=title)
+    except MenuItem.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == 'GET':
+        serializer = MenuItemSerializer(menuitem)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        pass
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        pass
+
 
 
 
