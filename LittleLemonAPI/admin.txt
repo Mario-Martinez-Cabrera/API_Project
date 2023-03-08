@@ -2,3 +2,13 @@ superuser credentials
 
 username: admin 
 passwork: 123admin123
+
+
+Manager : Angie
+Token: 092fa23d31f0f496224d764f8821cab488aa380b
+
+delivery_crew : Bry 
+Token: 0aea4ac03bbb973bcd1df47ee213a89d64025498
+
+Users : Che
+Token: 586bfb17caafc13f1ac6fd8868b2403d8528952f
