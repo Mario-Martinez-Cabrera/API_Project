@@ -134,7 +134,13 @@ class GroupViewSet(viewsets.ViewSet):
         items = UserSerializer(users, many=True)
         return Response(items.data)
     
+    def create(self, request):
+        user = get_object_or_404(User, username=request.data['username'])
+        managers = Group.objects.get(name="Manager")
+        managers.user_set.add(user)
+        return Response({"message": "user added to the manager group"}, 200)
     
+
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
