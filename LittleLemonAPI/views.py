@@ -78,6 +78,33 @@ class OrderView(generics.ListCreateAPIView):
             return Order.objects.all().filter(delivery_crew=self.request.user) #only shows orders assigned to them
         else: #delivery crew or manager
             return Order.objects.all()
+        
+    def create(self, request, *args, **kwargs):
+        menuitem_count = Cart.objects.all().filter(user=self.request.user).count()
+        if menuitem_count == 0:
+            return Response({"message:": "no item in cart"})
+        data = request.data.copy()
+        total = self.get_total_price(self.request.user)
+        data['total'] = total
+        data['user'] = self.request.user.id
+        order_serializer = OrderSerializer(data=data)
+        if (order_serializer.is_valid()):
+            order = order_serializer.save()
+            items = Cart.objects.all().filter(user=self.request.user).all()
+
+            for item in items.values():
+                orderitem = OrderItem(
+                    order=order,
+                    menuitem_id=item['menuitem_id'],
+                    price=item['price'],
+                    quantity=item['quantity'],
+                )
+                orderitem.save()
+            Cart.objects.all().filter(user=self.request.user).delete() #delete cart items
+
+            result = order_serializer.data.copy()
+            result['total'] = total
+            return Response(order_serializer.data)
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
