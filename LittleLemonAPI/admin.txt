@@ -1,0 +1,4 @@
+superuser credentials 
+
+username: admin 
+passwork: 123admin123
