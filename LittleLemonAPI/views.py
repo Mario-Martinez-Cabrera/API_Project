@@ -124,6 +124,17 @@ class SingleOrderView(generics.RetrieveUpdateAPIView):
             return Response('Not Ok')
         else: #everyone else - super admin, manager, delivery crew
             return super().update(request, *args, **kwargs)
+        
+
+class GroupViewSet(viewsets.ViewSet):
+    permission_classes = [IsAdminUser]
+
+    def list(self, request):
+        users = User.objects.all().filter(groups__name='Manager')
+        items = UserSerializer(users, many=True)
+        return Response(items.data)
+    
+    
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
