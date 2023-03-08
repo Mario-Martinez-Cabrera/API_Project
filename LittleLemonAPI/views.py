@@ -37,6 +37,18 @@ class MenuItemsView(generics.ListCreateAPIView):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes]
+    
+
+class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.request.method != 'GET':
+            permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in permission_classes]
 
 
 ### Not needed but nice to have and to remember the code ###
