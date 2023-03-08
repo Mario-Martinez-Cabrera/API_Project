@@ -112,6 +112,18 @@ class OrderView(generics.ListCreateAPIView):
         for item in items.values():
             total += item['price']
         return total
+    
+
+class SingleOrderView(generics.RetrieveUpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        if self.request.user.groups.count()==0: #normal user not belonging to group
+            return Response('Not Ok')
+        else: #everyone else - super admin, manager, delivery crew
+            return super().update(request, *args, **kwargs)
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
