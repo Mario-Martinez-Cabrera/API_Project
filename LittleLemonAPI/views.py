@@ -51,6 +51,21 @@ class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
         return [permission() for permission in permission_classes]
 
 
+class CartView(generics.ListCreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.all().filter(user=self.request.user)
+    
+    def delete(self, request, *args, **kwargs):
+        Cart.objects.all().filter(user=self.request.user).delete()
+        return Response("ok")
+    
+
+
+
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
 # def menuitems_list(request):
