@@ -64,7 +64,20 @@ class CartView(generics.ListCreateAPIView):
         return Response("ok")
     
 
+class OrderView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Order.objects.all()
+        elif self.request.user.groups.count() == 0: #normal customer (belongs to no group)
+            return Order.objects.all().filter(user=self.request.user)
+        elif self.request.user.groups.filter(name='Delivery Crew').exists(): #delivery crew
+            return Order.objects.all().filter(delivery_crew=self.request.user) #only shows orders assigned to them
+        else: #delivery crew or manager
+            return Order.objects.all()
 
 ### Not needed but nice to have and to remember the code ###
 # @api_view(['GET', 'POST'])
