@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.http import HttpResponse, JsonResponse
-from .models import MenuItem, Category, Cart, Order, OrderItem
-from .serializers import MenuItemSerializer
+from .models import MenuItem, Cart
+from .serializers import MenuItemSerializer, CartSerializer
 from rest_framework import generics
 
 # Create your views here.
@@ -42,3 +42,9 @@ def menuitem_detail(request, id):
         menuitem.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def cart_list(request):
+    if request.method == 'GET':
+        cartitems = Cart.objects.all()
+        serializer = CartSerializer(cartitems, many=True)
+        return Response(serializer.data)
