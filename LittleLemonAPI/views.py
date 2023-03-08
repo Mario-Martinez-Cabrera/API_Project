@@ -9,10 +9,18 @@ from rest_framework import generics
 
 # Create your views here.
 
+@api_view(['GET', 'POST'])
 def menuitems_list(request):
-    menuitems = MenuItem.objects.all()
-    serializer = MenuItemSerializer(menuitems, many=True)
-    return JsonResponse({'menu items' : serializer.data}, safe=False)
+    if request.method == 'GET':
+        menuitems = MenuItem.objects.all()
+        serializer = MenuItemSerializer(menuitems, many=True)
+        return JsonResponse({'menu items' : serializer.data}, safe=False)
+    if request.method == 'POST':
+        serializer = MenuItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 #class MenuItemsView(generics.ListCreateAPIView):
