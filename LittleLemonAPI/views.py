@@ -23,6 +23,20 @@ class CategoryViews(generics.ListCreateAPIView):
         if self.request.method != 'GET':
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
+    
+
+class MenuItemsView(generics.ListCreateAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    search_fields = ['category__title']
+    ordering_fields = ['price', 'inventory']
+
+    def get_permissions(self):
+        permission_classes = []
+        if self.request.method != 'GET':
+            permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in permission_classes]
 
 @api_view(['GET', 'POST'])
 def menuitems_list(request):
